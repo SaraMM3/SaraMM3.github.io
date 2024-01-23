@@ -1,5 +1,4 @@
-import Phaser from 'phaser'
-import PhaserGame from 'nuxtjs-phaser/phaserGame.vue'
+import Phaser from 'https://cdnjs.cloudflare.com/ajax/libs/phaser/3.70.0/phaser.min.js'
 
     class Example extends Phaser.Scene
     {
