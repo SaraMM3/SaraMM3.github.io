@@ -1,4 +1,4 @@
-import Phaser from 'https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.esm.js'
+import Phaser from '//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js'
 
     class Example extends Phaser.Scene
     {
