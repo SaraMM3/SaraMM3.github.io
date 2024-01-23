@@ -1,4 +1,4 @@
-import Phaser from 'https://cdnjs.cloudflare.com/ajax/libs/phaser/3.70.0/phaser.min.js'
+import Phaser from './node_modules/phaser'
 
     class Example extends Phaser.Scene
     {
