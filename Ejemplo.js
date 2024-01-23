@@ -1,4 +1,4 @@
-import Phaser from '//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js'
+const Phaser = require('//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js')
 
     class Example extends Phaser.Scene
     {
