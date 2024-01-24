@@ -8,7 +8,7 @@ document.head.appendChild(script);  // add it to the end of the head section of 
     class Example extends Phaser.Scene{
         preload (){
             //Saber como acceder a directorio assets- Ver doc notas
-            const directAssets = "./assets"
+            const directAssets = "https://saramm3.github.io/assets"
 
             //Cargar recursos
             this.load.image('sky', directAssets + '/sky.png');
