@@ -28,9 +28,12 @@ var personaje = "ayuda"
             this.load.image('star', directAssets + '/star.png');
             this.load.image('bomb', directAssets + '/bomb.png');
 
+           let person =  getSprite(personaje)
+           console.log("tras getSprite"+person)
+
             //Fotogramas sprite jugador (se usaran para animacion)
             this.load.spritesheet('dude', 
-            directAssets + getSprite(personaje),//'/dude.png',
+            directAssets +person,//'/dude.png',
                 { frameWidth: 45, frameHeight: 38 }
             );
         }
