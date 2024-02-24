@@ -3,8 +3,7 @@ var script = document.createElement("script");  // create a script DOM node
 script.src = "https://cdnjs.cloudflare.com/ajax/libs/phaser/3.70.0/phaser.min.js";  // set its src to the provided URL
    
 document.head.appendChild(script);  // add it to the end of the head section of the page (could change 'head' to 'body' to add it to the end of the body section instead)
-let personaje
-
+let personaje = "BiZyC2jeJQ2f71huiGIS"
     /*Cambiar nombre Example*/
     class Example extends Phaser.Scene{
         preload (){
@@ -19,7 +18,7 @@ let personaje
 
             //Fotogramas sprite jugador (se usaran para animacion)
             this.load.spritesheet('dude', 
-            directAssets + getSprite(this.personaje)//'/dude.png',
+            directAssets + getSprite(personaje),//'/dude.png',
                 { frameWidth: 45, frameHeight: 38 }
             );
         }
@@ -258,9 +257,10 @@ let personaje
 
     };
     
-    export default function createGame(personaje) {
+    export default function createGame(personajeArg) {
         let game =  new Phaser.Game(config);
-        console.log("IMPORTANTE: PERSONAJE", personaje)
+        console.log("IMPORTANTE: PERSONAJE", personajeArg)
+       personajeArg = personaje
 
         let inicializacionPhaserEvento = new CustomEvent("inicializacionPhaserJuego", {
             detail: {juego: game}
