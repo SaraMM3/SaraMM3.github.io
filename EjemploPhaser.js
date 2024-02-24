@@ -4,10 +4,10 @@ script.src = "https://cdnjs.cloudflare.com/ajax/libs/phaser/3.70.0/phaser.min.js
    
 document.head.appendChild(script);  // add it to the end of the head section of the page (could change 'head' to 'body' to add it to the end of the body section instead)
 
-var personaje = "BiZyC2jeJQ2f71huiGIS"
 
 /*Cambiar nombre Example*/
     class Example extends Phaser.Scene{
+      var personaje = "BiZyC2jeJQ2f71huiGIS"
 
         preload (){
             //Saber como acceder a directorio assets- Ver doc notas
