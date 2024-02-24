@@ -7,7 +7,7 @@ document.head.appendChild(script);  // add it to the end of the head section of 
 
 /*Cambiar nombre Example*/
     class Example extends Phaser.Scene{
-      var personaje = "BiZyC2jeJQ2f71huiGIS"
+      static personaje = "BiZyC2jeJQ2f71huiGIS"
 
         preload (){
             //Saber como acceder a directorio assets- Ver doc notas
