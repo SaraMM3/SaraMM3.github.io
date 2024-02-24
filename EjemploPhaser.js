@@ -3,7 +3,17 @@ var script = document.createElement("script");  // create a script DOM node
 script.src = "https://cdnjs.cloudflare.com/ajax/libs/phaser/3.70.0/phaser.min.js";  // set its src to the provided URL
    
 document.head.appendChild(script);  // add it to the end of the head section of the page (could change 'head' to 'body' to add it to the end of the body section instead)
+  function getSprite(personajeArg){
+             console.log("EN GETSPRITE "+ personajeArg)
 
+     //TODO: Dejar mas bonito cuando vea que funciona
+     if (personajeArg == "ppWoODcMniqd3xLSOGbq")
+        return "./gatoRey.png"
+
+     return "./dude.png"
+  }
+
+var personaje = "ayuda"
 
 /*Cambiar nombre Example*/
     class Example extends Phaser.Scene{
@@ -20,7 +30,7 @@ document.head.appendChild(script);  // add it to the end of the head section of 
 
             //Fotogramas sprite jugador (se usaran para animacion)
             this.load.spritesheet('dude', 
-            directAssets + this.personaje,//'/dude.png',
+            directAssets + getSprite(personaje),//'/dude.png',
                 { frameWidth: 45, frameHeight: 38 }
             );
         }
@@ -227,10 +237,6 @@ document.head.appendChild(script);  // add it to the end of the head section of 
             bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
 
         }
-
-       function setPersonaje(personaje){
-          this.personaje = personaje
-       }
        
     }
 
@@ -267,7 +273,7 @@ document.head.appendChild(script);  // add it to the end of the head section of 
     export default function createGame(personajeArg) {
         let game =  new Phaser.Game(config);
         console.log("IMPORTANTE: PERSONAJE", personajeArg)
-       setPersonaje(personajeArg)
+       personaje = personajeArg
 
         let inicializacionPhaserEvento = new CustomEvent("inicializacionPhaserJuego", {
             detail: {juego: game}
@@ -276,11 +282,5 @@ document.head.appendChild(script);  // add it to the end of the head section of 
         return game
     }
 
-  function getSprite(personajeArg){
-     //TODO: Dejar mas bonito cuando vea que funciona
-     if (personajeArg == "ppWoODcMniqd3xLSOGbq")
-        return "./gatoRey.png"
 
-     return "./dude.png"
-  }
     
