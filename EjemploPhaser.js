@@ -7,7 +7,6 @@ document.head.appendChild(script);  // add it to the end of the head section of 
 
 /*Cambiar nombre Example*/
     class Example extends Phaser.Scene{
-      static personaje = "BiZyC2jeJQ2f71huiGIS"
 
         preload (){
             //Saber como acceder a directorio assets- Ver doc notas
@@ -21,7 +20,7 @@ document.head.appendChild(script);  // add it to the end of the head section of 
 
             //Fotogramas sprite jugador (se usaran para animacion)
             this.load.spritesheet('dude', 
-            directAssets + getSprite(personaje),//'/dude.png',
+            directAssets + this.personaje,//'/dude.png',
                 { frameWidth: 45, frameHeight: 38 }
             );
         }
@@ -228,6 +227,11 @@ document.head.appendChild(script);  // add it to the end of the head section of 
             bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
 
         }
+
+       function setPersonaje(personaje){
+          this.personaje = personaje
+       }
+       
     }
 
     function hitBomb (player, bomb){
@@ -263,7 +267,7 @@ document.head.appendChild(script);  // add it to the end of the head section of 
     export default function createGame(personajeArg) {
         let game =  new Phaser.Game(config);
         console.log("IMPORTANTE: PERSONAJE", personajeArg)
-       personaje = personajeArg
+       Example.setPersonaje(personajeArg)
 
         let inicializacionPhaserEvento = new CustomEvent("inicializacionPhaserJuego", {
             detail: {juego: game}
