@@ -3,10 +3,10 @@ var script = document.createElement("script");  // create a script DOM node
 script.src = "https://cdnjs.cloudflare.com/ajax/libs/phaser/3.70.0/phaser.min.js";  // set its src to the provided URL
    
 document.head.appendChild(script);  // add it to the end of the head section of the page (could change 'head' to 'body' to add it to the end of the body section instead)
+let personaje
 
     /*Cambiar nombre Example*/
     class Example extends Phaser.Scene{
-       let personaje = undefined
         preload (){
             //Saber como acceder a directorio assets- Ver doc notas
             const directAssets = "/assets/ejemploPhaser"
