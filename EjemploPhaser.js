@@ -6,6 +6,7 @@ document.head.appendChild(script);  // add it to the end of the head section of 
 
     /*Cambiar nombre Example*/
     class Example extends Phaser.Scene{
+       let personaje = undefined
         preload (){
             //Saber como acceder a directorio assets- Ver doc notas
             const directAssets = "/assets/ejemploPhaser"
@@ -18,7 +19,7 @@ document.head.appendChild(script);  // add it to the end of the head section of 
 
             //Fotogramas sprite jugador (se usaran para animacion)
             this.load.spritesheet('dude', 
-            directAssets + '/dude.png',
+            directAssets + getSprite(this.personaje)//'/dude.png',
                 { frameWidth: 45, frameHeight: 38 }
             );
         }
@@ -267,4 +268,12 @@ document.head.appendChild(script);  // add it to the end of the head section of 
         document.dispatchEvent(inicializacionPhaserEvento)
         return game
     }
+
+  function getSprite(personaje){
+     //TODO: Dejar mas bonito cuando vea que funciona
+     if (personaje == "ppWoODcMniqd3xLSOGbq")
+        return "./gatoRey.png"
+
+     return "./dude.png"
+  }
     
