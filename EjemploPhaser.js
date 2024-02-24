@@ -257,8 +257,9 @@ document.head.appendChild(script);  // add it to the end of the head section of 
 
     };
     
-    export default function createGame() {
+    export default function createGame(personaje) {
         let game =  new Phaser.Game(config);
+        console.log("IMPORTANTE: PERSONAJE", personaje)
 
         let inicializacionPhaserEvento = new CustomEvent("inicializacionPhaserJuego", {
             detail: {juego: game}
