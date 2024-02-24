@@ -8,9 +8,9 @@ document.head.appendChild(script);  // add it to the end of the head section of 
 
      //TODO: Dejar mas bonito cuando vea que funciona
      if (personajeArg == "ppWoODcMniqd3xLSOGbq")
-        return "./gatoRey.png"
+        return "/gatoRey.png"
 
-     return "./dude.png"
+     return "/dude.png"
   }
 
 var personaje = "ayuda"
