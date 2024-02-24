@@ -19,7 +19,7 @@ document.head.appendChild(script);  // add it to the end of the head section of 
 
             //Fotogramas sprite jugador (se usaran para animacion)
             this.load.spritesheet('dude', 
-            directAssets + getSprite(personaje),//'/dude.png',
+            directAssets + getSprite(this.personaje),//'/dude.png',
                 { frameWidth: 45, frameHeight: 38 }
             );
         }
