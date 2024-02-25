@@ -57,20 +57,20 @@ var personaje = "ayuda"
             this.anims.create({
                 key: 'left',    //Al ir a la izquierda
                 frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),  //Usa fotogramas 0-3
-                frameRate: 10,  //Velocidad en fotogramas/segundo
+                frameRate: 4,  //Velocidad en fotogramas/segundo
                 repeat: -1  //La animacion debe volver a empezar cuando termine
             });
 
             this.anims.create({
                 key: 'turn',    //Al girar
-                frames: [ { key: 'dude', frame: 4 } ],
-                frameRate: 20
+                frames: [ { key: 'dude', { start: 4, end: 8} } ],
+                frameRate: 4
             });
 
             this.anims.create({
                 key: 'right',   //Al ir a la derecha
-                frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
-                frameRate: 10,
+                frames: this.anims.generateFrameNumbers('dude', { start: 9, end: 12 }),
+                frameRate: 4,
                 repeat: -1
             });            
             
