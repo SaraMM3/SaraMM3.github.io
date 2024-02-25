@@ -63,7 +63,7 @@ var personaje = "ayuda"
 
             this.anims.create({
                 key: 'turn',    //Al girar
-                frames: [ { key: 'dude', { start: 4, end: 8} } ],
+                frames: this.anims.generateFrameNumbers('dude', { start: 4, end: 8 }),
                 frameRate: 4
             });
 
