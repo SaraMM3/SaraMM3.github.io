@@ -20,12 +20,13 @@ var personaje = "ayuda"
             this.load.image('star', directAssets + '/star.png');
             this.load.image('bomb', directAssets + '/bomb.png');
 
-           let person =  getSprite(personaje)
-           console.log("tras getSprite"+person)
+           //let person =  getSprite(personaje)
+           //console.log("tras getSprite"+person)
+           console.log("tras getSprite"+personaje)
 
             //Fotogramas sprite jugador (se usaran para animacion)
             this.load.spritesheet('dude', 
-            directAssets +person,//'/dude.png',
+            directAssets +personaje,//'/dude.png',
                 { frameWidth: 45, frameHeight: 38 }
             );
         }
@@ -265,20 +266,13 @@ var personaje = "ayuda"
 
     };
 
-  function getSprite(personajeArg){
-             console.log("EN GETSPRITE "+ personajeArg)
 
-     //TODO: Dejar mas bonito cuando vea que funciona
-     if (personajeArg == "ppWoODcMniqd3xLSOGbq")
-        return "/gatoRey.png"
-
-     return "/dude.png"
-  }
     
-    export default function createGame(personajeArg) {
+    export default function createGame(personajeArg, getSprite) {
         let game =  new Phaser.Game(config);
         console.log("IMPORTANTE: PERSONAJE", personajeArg)
-       personaje = personajeArg
+       personaje = getSprite(personajeArg)
+       
 
         let inicializacionPhaserEvento = new CustomEvent("inicializacionPhaserJuego", {
             detail: {juego: game}
