@@ -29,6 +29,7 @@ var personaje = "ayuda"
             directAssets +personaje,//'/dude.png',
                 { frameWidth: 45, frameHeight: 38 }
             );
+           console.log(directAssets +personaje)
         }
 
         create (){
@@ -272,6 +273,7 @@ var personaje = "ayuda"
         let game =  new Phaser.Game(config);
         console.log("IMPORTANTE: PERSONAJE", personajeArg)
        personaje = getSprite(personajeArg)
+       console.log("ASUHDPASU: ", personajeArg)
        
 
         let inicializacionPhaserEvento = new CustomEvent("inicializacionPhaserJuego", {
