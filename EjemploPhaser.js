@@ -155,6 +155,8 @@ var personaje = "ayuda"
             //Para saltar. Solo puede si esta tocando el suelo
             if ( (this.cursors.up.isDown || this.keyW.isDown ) && this.player.body.touching.down){
                 this.player.setVelocityY(-430);
+                               this.player.anims.play('turn', true);
+
             }        
         }
 
