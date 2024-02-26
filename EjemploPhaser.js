@@ -145,6 +145,13 @@ var personaje = "ayuda"
                 this.player.anims.play('right', true);
             }
 
+            else if (this.body.velocity.x === 0 && this.body.velocity.y === 0){
+               console.log("QUIETOOO")
+               this.player.anims.play('turn', true);
+
+            }
+
+
             //Si no esta pulsando nada
             else{
                 this.player.setVelocityX(0);
