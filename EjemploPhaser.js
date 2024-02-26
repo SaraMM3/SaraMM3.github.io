@@ -63,7 +63,7 @@ var personaje = "ayuda"
 
             this.anims.create({
                 key: 'turn',    //Al girar
-                frames: this.anims.generateFrameNumbers('dude', { start: 8, end: 8 }),
+                frames: this.anims.generateFrameNumbers('dude', { start: 7, end: 8 }),
                 frameRate: 6,
                repeat: -1  //La animacion debe volver a empezar cuando termine
 
