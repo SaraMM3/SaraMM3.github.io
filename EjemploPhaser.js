@@ -141,16 +141,17 @@ var personaje = "ayuda"
             //Comprueba si esta pulsando la tecla derecha
             else if (this.cursors.right.isDown || this.keyD.isDown){
                 this.player.setVelocityX(160);
+               console.log(this.body)
 
                 this.player.anims.play('right', true);
             }
-
+/*
             else if (this.body.velocity.x === 0 && this.body.velocity.y === 0){
                console.log("QUIETOOO")
                this.player.anims.play('turn', true);
 
             }
-
+*/
 
             //Si no esta pulsando nada
             else{
