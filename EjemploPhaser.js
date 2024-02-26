@@ -149,7 +149,7 @@ var personaje = "ayuda"
             else{
                 this.player.setVelocityX(0);
 
-                this.player.anims.play('turn');
+                this.player.anims.play('turn', true);
             }
 
             //Para saltar. Solo puede si esta tocando el suelo
