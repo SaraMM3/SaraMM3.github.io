@@ -1,10 +1,12 @@
+// Variable que guardara el personaje elegido, para poder usar el sprite adecuado
 var personaje = ""
+var cambioPuntuacion
 
-/*Cambiar nombre Example*/
+    // Se puede cambiar el nombre Example mientras sea coherente con el nombre en config mas abajo
     class Example extends Phaser.Scene{
 
         preload (){
-            //Saber como acceder a directorio assets- Ver doc notas
+            // En este caso, accedemos a los sprites que estan con codigo plataforma, pero podria no ser el caso
             const directAssets = "/assets/ejemploPhaser"
 
             //Cargar recursos
@@ -13,16 +15,11 @@ var personaje = ""
             this.load.image('star', directAssets + '/star.png');
             this.load.image('bomb', directAssets + '/bomb.png');
 
-           //let person =  getSprite(personaje)
-           //console.log("tras getSprite"+person)
-           console.log("tras getSprite"+personaje)
-
             //Fotogramas sprite jugador (se usaran para animacion)
             this.load.spritesheet('dude', 
             directAssets +personaje,//'/dude.png',
                 { frameWidth: 45, frameHeight: 38 }
             );
-           console.log(directAssets +personaje)
         }
 
         create (){
@@ -128,23 +125,15 @@ var personaje = ""
 
                 //Ejecuta la animacion de moverse a la izquierda
                 this.player.anims.play('left', true);
-                //console.log("IZQUIERDA")
             }
 
             //Comprueba si esta pulsando la tecla derecha
             else if (this.cursors.right.isDown || this.keyD.isDown){
                 this.player.setVelocityX(160);
-               console.log(this.body)
 
                 this.player.anims.play('right', true);
             }
-/*
-            else if (this.body.velocity.x === 0 && this.body.velocity.y === 0){
-               console.log("QUIETOOO")
-               this.player.anims.play('turn', true);
 
-            }
-*/
 
             //Si no esta pulsando nada
             else{
@@ -216,12 +205,7 @@ var personaje = ""
         this.scoreText.setText('Score: ' + this.score);
 
         //Emitimos evento de cambio de puntuacion
-        let cambioPuntuacionEvento = new CustomEvent("cambioPuntuacionJuego", {
-            detail: {puntuacion: this.score}
-        })
-        document.dispatchEvent(cambioPuntuacionEvento)
-        //*/
-        //cambioPuntuacionListener(this.score)
+        cambioPuntuacion(this.score)
 
         //Al recoger todas las estrellas
         if (this.stars.countActive(true) === 0) {
@@ -260,7 +244,7 @@ var personaje = ""
         type: Phaser.AUTO,
         width: 800,
         height: 600,
-        /*Cambiar nombre Example */
+        /*Cambiar nombre Example si se cambio antes */
         scene: Example,
         physics: {
             default: 'arcade',
@@ -293,20 +277,16 @@ var personaje = ""
    * inicializaciones (nombre de personaje, para que se pueda usar aqui
    * a la hora de elegir el sprite a usar por ejemplo)
    */
-    export default function createGame(personajeArg) {
-         // Inicializamos el juego
-         let game =  new Phaser.Game(config);
-       
-         console.log("IMPORTANTE: PERSONAJE", personajeArg)
-       
-         personaje = getSprite(personajeArg)
-         console.log("ASUHDPASU: ", personajeArg)
-       
+    export default function createGame(personajeArg, cambioPuntuacionEvento) {
+        // Inicializamos el juego
+        let game =  new Phaser.Game(config);
 
-        let inicializacionPhaserEvento = new CustomEvent("inicializacionPhaserJuego", {
-            detail: {juego: game}
-        })
-        document.dispatchEvent(inicializacionPhaserEvento)
+        // Obtenemos el nombre del personaje elegido (tener en cuenta que puede no haberse elegido ninguno)
+        personaje = getSprite(personajeArg)
+
+        //Inicializamos las funciones que se llamaran para comunicar eventos que ocurran
+        cambioPuntuacion = cambioPuntuacionEvento
+        
         return game
     }
 
