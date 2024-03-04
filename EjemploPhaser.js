@@ -1,11 +1,4 @@
-//const Phaser = require('//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js')
-var script = document.createElement("script");  // create a script DOM node
-script.src = "https://cdnjs.cloudflare.com/ajax/libs/phaser/3.70.0/phaser.min.js";  // set its src to the provided URL
-   
-document.head.appendChild(script);  // add it to the end of the head section of the page (could change 'head' to 'body' to add it to the end of the body section instead)
-
-
-var personaje = "ayuda"
+var personaje = ""
 
 /*Cambiar nombre Example*/
     class Example extends Phaser.Scene{
@@ -279,13 +272,35 @@ var personaje = "ayuda"
 
     };
 
+        /**
+         * Funcion que dado el nombre del personaje elegido devuelve el sprite
+         * Esta funcion debe ser exclusiva de cada juego, por si el creador decide
+         * usar sus propios sprites
+         * @param personajeArg 
+         */
+        getSprite(personajeArg){
+            console.log("EN GETSPRITE "+ personajeArg)
 
-    
+        //TODO: Dejar mas bonito cuando vea que funciona
+        if (personajeArg == "Monarca")
+            return "/rey.png"
+
+        return "/default.png"
+    }
+
+   /**
+   * Funcion que inicializa el juego y lo devuelve. Tambien realiza otras
+   * inicializaciones (nombre de personaje, para que se pueda usar aqui
+   * a la hora de elegir el sprite a usar por ejemplo)
+   */
     export default function createGame(personajeArg, getSprite) {
-        let game =  new Phaser.Game(config);
-        console.log("IMPORTANTE: PERSONAJE", personajeArg)
-       personaje = getSprite(personajeArg)
-       console.log("ASUHDPASU: ", personajeArg)
+         // Inicializamos el juego
+         let game =  new Phaser.Game(config);
+       
+         console.log("IMPORTANTE: PERSONAJE", personajeArg)
+       
+         personaje = getSprite(personajeArg)
+         console.log("ASUHDPASU: ", personajeArg)
        
 
         let inicializacionPhaserEvento = new CustomEvent("inicializacionPhaserJuego", {
