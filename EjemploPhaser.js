@@ -293,7 +293,7 @@ var personaje = ""
    * inicializaciones (nombre de personaje, para que se pueda usar aqui
    * a la hora de elegir el sprite a usar por ejemplo)
    */
-    export default function createGame(personajeArg, getSprite) {
+    export default function createGame(personajeArg) {
          // Inicializamos el juego
          let game =  new Phaser.Game(config);
        
