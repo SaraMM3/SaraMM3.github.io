@@ -1,6 +1,8 @@
 // Variable que guardara el personaje elegido, para poder usar el sprite adecuado
 var personaje = ""
 var cambioPuntuacion
+var gameOverEvento
+var nuevaPartida
 
     // Se puede cambiar el nombre Example mientras sea coherente con el nombre en config mas abajo
     class Example extends Phaser.Scene{
@@ -173,10 +175,7 @@ var cambioPuntuacion
         fGameOver(){
             this.gameOver = true;
             //Tras game over: Se emite evento game over
-            let gameOverEvento = new CustomEvent("gameOverJuego", {
-                detail: {puntuacion: this.score}
-            })
-            document.dispatchEvent(gameOverEvento)
+                gameOverEvento(this.score)
 
             //Esta opcion refresca la pagina entera. Tambien sirve, pero lo otro es mejor
             //location.reload();    
@@ -191,8 +190,7 @@ var cambioPuntuacion
             this.gameOver = false
 
             //Emitimos evento de que se crea una nueva partida para avisar
-            let nuevaPartidaEvento = new CustomEvent("nuevaPartidaJuego")
-            document.dispatchEvent(nuevaPartidaEvento)
+            nuevaPartida()
         }
     }
 
@@ -277,7 +275,7 @@ var cambioPuntuacion
    * inicializaciones (nombre de personaje, para que se pueda usar aqui
    * a la hora de elegir el sprite a usar por ejemplo)
    */
-    export default function createGame(personajeArg, cambioPuntuacionEvento) {
+    export default function createGame(personajeArg, cambioPuntuacionEvento, nuevaPartidaEvento, gameOverEventoCall) {
         // Inicializamos el juego
         let game =  new Phaser.Game(config);
 
@@ -286,6 +284,8 @@ var cambioPuntuacion
 
         //Inicializamos las funciones que se llamaran para comunicar eventos que ocurran
         cambioPuntuacion = cambioPuntuacionEvento
+        nuevaPartida = nuevaPartidaEvento
+        gameOverEvento = gameOverEventoCall
         
         return game
     }
