@@ -278,7 +278,7 @@ var personaje = ""
          * usar sus propios sprites
          * @param personajeArg 
          */
-        getSprite(personajeArg){
+        function getSprite(personajeArg){
             console.log("EN GETSPRITE "+ personajeArg)
 
         //TODO: Dejar mas bonito cuando vea que funciona
