@@ -228,7 +228,7 @@ function getSprite(personajeArg) {
 * inicializaciones (nombre de personaje, para que se pueda usar aqui
 * a la hora de elegir el sprite a usar por ejemplo)
 */
-/*export default*/ function createGame(personajeArg, cambioPuntuacionEvento, nuevaPartidaEvento, gameOverEventoCall) {
+export default function createGame(personajeArg, cambioPuntuacionEvento, nuevaPartidaEvento, gameOverEventoCall) {
     /* Inicializamos el juego */
     let game = new Phaser.Game(config);
     
