@@ -231,6 +231,7 @@ function getSprite(personajeArg) {
 export default function createGame(personajeArg, cambioPuntuacionEvento, nuevaPartidaEvento, gameOverEventoCall) {
     /* Inicializamos el juego */
     let game = new Phaser.Game(config);
+    console.log("personajeArg: ", personajeArg)
     
     /* Aqui tambien se puede inicializar el personaje */
     personaje = getSprite(personajeArg)
