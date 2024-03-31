@@ -267,6 +267,9 @@ var nuevaPartida
         if (personajeArg == "Monarca")
             return "/rey.png"
 
+        if (personajeArg == "Artista")
+            return "/artista.png"
+            
         return "/default.png"
     }
 
