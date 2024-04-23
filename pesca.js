@@ -563,5 +563,3 @@ a continuacion, siendo this.score un ejemplo de nombre para la puntuacion del us
     gameOverEvento(this.score)
 
 *******************************************/
-
-</script>
