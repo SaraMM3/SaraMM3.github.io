@@ -1,3 +1,4 @@
+
 /*
 import Phaser from 'phaser'
 import PhaserGame from 'nuxtjs-phaser/phaserGame.vue'
@@ -12,10 +13,21 @@ var personaje
 /* Se puede cambiar nombre Example (si es coherente con el especificado en config posteriormente)*/
 class Example extends Phaser.Scene {
     preload() {
+        this.primeraPartida = true  // Para saber si debe emitir evento nuevaPartida o no (solo se emite tras nueva partida no inicial, no en la primera)
+        this.menu = true // Si esta en menu
         const directAssets = "/assets/ejemploPhaser"
 
         this.load.image('background', directAssets + '/BackgroundMar.png');
         this.load.image('ground', directAssets + '/fondoMar.png');
+        this.load.image('MarCapa1', directAssets + '/MarCapa1.png')
+        this.load.image('MarCapa2', directAssets + '/MarCapa2.png')
+        this.load.image('Arenabg', directAssets + '/Arenabg.png')
+
+        // Boton menu
+        this.load.spritesheet('botonJugar',
+            directAssets + '/botonJugar.png',
+            { frameWidth: 344, frameHeight: 160 }
+        );
 
         //Fotogramas sprite jugador (se usaran para animacion)
         this.load.spritesheet('dude',
@@ -39,17 +51,17 @@ class Example extends Phaser.Scene {
             { frameWidth: 26, frameHeight: 20 }
         );
 
-        // Este no tiene animaciones
+        // Este no tiene animaciones, solo rebota
         this.load.image('pezGlobo', directAssets + '/pezGlobo.png');
 
     }
 
     create() {
-        //Tiempo de partida
-        this.tiempo = 60
-
         //Mostramos imagen (mar)
-        this.add.image(400, 300, 'background');
+        //this.add.image(400, 300, 'background');
+        this.marCapa1 = this.add.tileSprite(400, 300, 800, 600, 'MarCapa1')
+        this.marCapa2 = this.add.tileSprite(400, 300, 800, 600, 'MarCapa2')
+        this.Arenabg = this.add.tileSprite(400, 300, 800, 600, 'Arenabg')
 
         //Creamos grupo de plataformas (elem estaticos) con fisica
         this.platforms = this.physics.add.staticGroup();
@@ -57,21 +69,8 @@ class Example extends Phaser.Scene {
         //Creamos el suelo
         this.platforms.create(400, 585, 'ground').refreshBody()
 
-        //Creamos sprite jugador
-        this.player = this.physics.add.sprite(100, 450, 'dude')
-        this.player.setCollideWorldBounds(true); //Para que colisione con limites del juego (no pueda salir de pantalla)
-        this.player.body.setGravityY(10)
-
         // Inicializamos las animaciones aparte para que no ocupe tanto espacio aqui
         this.animInit()
-
-        //Añadimos puntuacion
-        this.score = 0;
-        this.scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' });
-        this.timeLeft = this.add.text(300, 16, 'Tiempo: '+this.tiempo + ' s', { fontSize: '32px', fill: '#000' });
-        
-        //Añadimos colliders para ver si hay colision/superposicion entre jugador y suelo (asi no lo atraviesa)
-        this.physics.add.collider(this.player, this.platforms);
 
         //Añadimos gestor de teclado. Cursors tiene 4 propiedades (las 4 diercciones)
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -82,48 +81,53 @@ class Example extends Phaser.Scene {
         this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
 
-        // Temporizador para ver cuando acaba la partida y que controla cuando aparecen peces. Se actualiza cada segundo
-        this.actualizarTiempoJuego()
+        // Ponemos el menu
+        this.crearMenu("De al boton para comenzar a jugar!")
 
-        // Hacemos que empiecen a aparecer peces
-        this.eventoTempSpawnPez()
     }
 
     
     update() {
 
-        //Comprueba si esta pulsando la tecla izquierda
-        if (this.cursors.left.isDown || this.keyA.isDown) {
-            //Entonces aplica velocidad horizontal negativa
-            this.player.setVelocityX(-200);
+        this.marCapa1.tilePositionX += 0.3
+        this.marCapa2.tilePositionX += 0.6
 
-            //Ejecuta la animacion de moverse a la izquierda
-            this.player.anims.play('playerLeft', true);
+        // Si no estamos en menu, podemos movernos
+        if (!this.menu){
+
+            //Comprueba si esta pulsando la tecla izquierda
+            if (this.cursors.left.isDown || this.keyA.isDown) {
+                //Entonces aplica velocidad horizontal negativa
+                this.player.setVelocityX(-200);
+
+                //Ejecuta la animacion de moverse a la izquierda
+                this.player.anims.play('playerLeft', true);
+
+            }
+
+            //Comprueba si esta pulsando la tecla derecha
+            else if (this.cursors.right.isDown || this.keyD.isDown) {
+                this.player.setVelocityX(200);
+                this.player.anims.play('playerRight', true);
+
+            }
+
+            //Si no esta pulsando derecha o izquierda
+            else {
+                this.player.setVelocityX(0);
+                this.player.anims.play('playerTurn', true);
+            }
+
+            //Para saltar, o en este caso, nadar hacia arriba
+            if (this.cursors.up.isDown || this.keyW.isDown) {
+                this.player.setVelocityY(-200);
+            }
+
+            //Para bajar mas rapido. Solo puede si esta tocando el suelo: Ahora puede siempre
+            if (this.cursors.down.isDown || this.keyS.isDown) {
+                this.player.setVelocityY(200);
+            }
         }
-
-        //Comprueba si esta pulsando la tecla derecha
-        else if (this.cursors.right.isDown || this.keyD.isDown) {
-            this.player.setVelocityX(200);
-            this.player.anims.play('playerRight', true);
-        }
-
-        //Si no esta pulsando derecha o izquierda
-        else {
-            this.player.setVelocityX(0);
-            this.player.anims.play('playerTurn', true);
-        }
-
-        //Para saltar, o en este caso, nadar hacia arriba
-        if (this.cursors.up.isDown || this.keyW.isDown) {
-            this.player.setVelocityY(-200);
-            //this.player.anims.play('turn', true);
-        }
-
-        //Para bajar mas rapido. Solo puede si esta tocando el suelo: Ahora puede siempre
-        if (this.cursors.down.isDown || this.keyS.isDown) {
-            this.player.setVelocityY(200);
-        }
-
 
     }
 
@@ -136,6 +140,7 @@ class Example extends Phaser.Scene {
         //Generamos un numero para determinar que peces hacen spawn
         var numAleat = Phaser.Math.Between(0,100)
 
+        // Cuando repetir es true, generamos el doble de peces cada vez
         var repeticiones = repetir ? 2 : 1
 
         for (let i = 0; i < repeticiones; i++ ){
@@ -173,6 +178,95 @@ class Example extends Phaser.Scene {
                 this.spawnPez("pezRaro")
             }
         }
+    }
+
+    /**
+     * Funcion que crea el menu
+     */
+    crearMenu(texto){
+        this.menu = true    // Para saber si estamos en el menu o no
+
+        this.textoMenu = this.add.text(80, 100, texto, { fontSize: '32px', fill: '#000' });
+
+
+        // Creamos el boton 
+        this.botonJugar = this.add.sprite(400, 300, 'botonJugar');  // Nota: Para que el boton este animado, debe ser sprite, no image
+        this.botonJugar.setInteractive()
+        
+        // Asignamos eventos al boton creado
+        this.botonJugar.on("pointerdown", () => {    // Cuando se hace click en el, comienza la partida 
+            this.onClickBotonJugar()
+        })
+
+        this.botonJugar.on("pointerover", () => {    // Cuando se hace hover sobre el, se vuelve rosa
+            this.botonJugar.anims.play('botonJugarRosa', true);
+        })
+
+        this.botonJugar.on("pointerout", () => {    // Cuando se sale del hover sobre el, vuelve a ser verde
+            this.botonJugar.anims.play('botonJugarVerde', true);
+        })        
+
+    }
+
+    /**
+     * Funcion que destruye los elementos del menu
+     */
+    destruirMenu(){
+        this.menu = false
+        this.botonJugar.destroy()
+        this.textoMenu.destroy()
+        //TODO: SEGUIR POR AQUI: AL MORIR DESTRUIR TODO (texto, peces, jugador, ...)
+        // CAMBIAR DONDE SE INICIA PARTIDA
+    }
+
+    /**
+     * Funcion que se ejecuta al pulsar el boton de jugar
+     */
+    onClickBotonJugar(){
+        // Destruimos el menu
+        this.destruirMenu()
+
+        // Si fisica estaba parada
+        this.physics.resume()
+
+        // Si no es la primera partida, avisamos para poder guardarla en el historial
+        if (!this.primeraPartida){
+            // TODO: EMITIR EVENTO NUEVAPARTIDA
+			nuevaPartida()
+        }
+
+        // Comenzamos la partida
+        this.partida()
+    }
+
+    /**
+     * Codigo de la partida en si
+     */
+    partida(){
+        this.primeraPartida = false
+        //Tiempo de partida
+        this.tiempo = 10
+
+        //Creamos sprite jugador
+        this.player = this.physics.add.sprite(100, 450, 'dude')
+        this.player.setCollideWorldBounds(true); //Para que colisione con limites del juego (no pueda salir de pantalla)
+        this.player.body.setGravityY(10)
+
+        
+        //Añadimos puntuacion
+        this.score = 0;
+        this.scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' });
+        this.timeLeft = this.add.text(300, 16, 'Tiempo: '+this.tiempo + ' s', { fontSize: '32px', fill: '#000' });
+        
+        //Añadimos colliders para ver si hay colision/superposicion entre jugador y suelo (asi no lo atraviesa)
+        this.physics.add.collider(this.player, this.platforms);
+
+        // Temporizador para ver cuando acaba la partida y que controla cuando aparecen peces. Se actualiza cada segundo
+        this.actualizarTiempoJuego()
+
+        // Hacemos que empiecen a aparecer peces
+        this.eventoTempSpawnPez()
+
     }
 
     /**
@@ -217,6 +311,8 @@ class Example extends Phaser.Scene {
             this.physics.add.collider(this.nuevoPez, this.platforms);
             this.nuevoPez.setBounce(1)
         }
+
+        //console.log("PEZ")
 
         this.nuevoPez.setVelocityX(velX);
         this.physics.add.overlap(this.player, this.nuevoPez, collectFish, null, this)
@@ -291,6 +387,20 @@ class Example extends Phaser.Scene {
             frameRate: 6,
             repeat: -1
         });
+
+        this.anims.create({
+            key: 'botonJugarVerde',
+            frames: this.anims.generateFrameNumbers('botonJugar', { start: 0, end: 0 }), 
+            frameRate: 1,
+            repeat: 1
+        });
+
+        this.anims.create({
+            key: 'botonJugarRosa',
+            frames: this.anims.generateFrameNumbers('botonJugar', { start: 1, end: 1 }), 
+            frameRate: 1,
+            repeat: 1
+        });
     }
 
     /**
@@ -305,21 +415,48 @@ class Example extends Phaser.Scene {
 
         // Cuando el contador llega a 0
         if (this.tiempo <= 0){
-            this.physics.pause();
-            //TODO: Gameover aqui, y lo ideal seria mostrar un menu
-            gameOverEvento(this.score)
+
+            this.finTiempo()
         }
 
         else{
-        // Volvemos a hacer que se llame (si no se ha acabado el tiempo, si no el temporizador se vuelve negativo))
-        this.eventoTemporizadorJuego = this.time.delayedCall(1000, this.actualizarTiempoJuego, [], this)
+            // Volvemos a hacer que se llame (si no se ha acabado el tiempo, si no el temporizador se vuelve negativo))
+            
+            this.eventoTemporizadorJuego = this.time.delayedCall(1000, this.actualizarTiempoJuego, [], this)
+            
+            var repetir = (this.tiempo < 15) ? true : false   //Si se crean el doble de peces
 
-
-        var repetir = (this.tiempo < 15) ? true : false   //Si se crean el doble de peces
-
-        // Hacemos que se vuelva a llamar a que aparezcan peces
-        this.timedEvent = this.time.delayedCall(1000, this.eventoTempSpawnPez, [repetir], this)
+            if (this.tiempo >=2){   // Si no ponemos >=2, habra peces que no se limpiaran al acabar la partida. Ademas de que no tiene sentido tan cerca del final invocar peces
+                // Hacemos que se vuelva a llamar a que aparezcan peces
+                this.timedEvent = this.time.delayedCall(1000, this.eventoTempSpawnPez, [repetir], this)
+            }
         }
+    }
+
+    /**
+     * Funcion que se ejecuta cuando se acaba el tiempo
+     */
+    finTiempo(){
+
+        // Paramos la fisica
+        this.physics.pause();
+
+        // Elementos a eliminar
+        let spritesReset = ["pezRosa", "pezAzul", "pezRaro", "dude", "pezGlobo"]
+
+        // Destruimos todos los sprites para volver a iniciar
+        let allSprites = this.children.list.filter(x => x instanceof Phaser.GameObjects.Sprite && spritesReset.includes(x.texture.key));
+        allSprites.forEach(x =>{ x.destroy() } );
+
+        // Quitamos el texto anterior
+        this.scoreText.destroy()
+        this.timeLeft.destroy()
+
+        // Mostramos el menu de nuevo
+        this.crearMenu("Fin de la partida! Puntuacion: " + this.score)
+
+        // Emitimos gameover
+		gameOverEvento(this.score)
 
 
     }
@@ -345,9 +482,9 @@ function collectFish(player, pez){
     this.score += puntuaciones[pez.texture.key]
     this.scoreText.setText('Score: ' + this.score);
 
-    //Emitimos evento de cambio de puntuacion
     cambioPuntuacion(this.score)
 }
+
 
 
 const config = {
@@ -355,7 +492,7 @@ const config = {
     type: Phaser.AUTO,
     width: 800,
     height: 600,
-
+    backgroundColor: '#90a5e6',
     /* Cambiar nombre Example si fuera necesario */
     scene: Example,
     physics: {
@@ -380,6 +517,7 @@ function getSprite(personajeArg) {
     //TODO: Dejar mas bonito cuando vea que funciona
     if (personajeArg == "Monarca")
         return "/rey.png"
+
     if (personajeArg == "Artista")
         return "/artista.png"
     return "/default.png"
@@ -405,3 +543,25 @@ export default function createGame(personajeArg, cambioPuntuacionEvento, nuevaPa
     /* Devolvemos el juego creado */
     return game
 }
+
+
+/* EJEMPLOS DE EMISION DE EVENTOS
+La funcion createGame recibe por parametros las funciones de callback que a usar para
+comunicar los eventos cuando ocurran. Para ello, basta con ejecutarlas como se muestra
+a continuacion, siendo this.score un ejemplo de nombre para la puntuacion del usuario:
+
+*******************************************
+    //Emitimos evento de cambio de puntuacion
+    cambioPuntuacion(this.score)
+
+*******************************************
+    //Emitimos evento de que se crea una nueva partida para avisar
+    nuevaPartida()
+
+*******************************************
+    //Tras game over: Se emite evento game over
+    gameOverEvento(this.score)
+
+*******************************************/
+
+</script>
